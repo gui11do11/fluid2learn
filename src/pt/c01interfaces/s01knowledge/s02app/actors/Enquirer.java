@@ -11,39 +11,60 @@ public class Enquirer implements IEnquirer
 {
     IObjetoConhecimento obj;
 	
-	public Enquirer()
-	{
-	}
-	
-	
 	@Override
 	public void connect(IResponder responder)
 	{
-        IBaseConhecimento bc = new BaseConhecimento();
+		IBaseConhecimento bc = new BaseConhecimento();
 		
-		obj = bc.recuperaObjeto("tiranossauro");
-
-		IDeclaracao decl = obj.primeira();
+		String nAnimais[] = bc.listaNomes();
+		String questoes[] = new String[50];
+		String resp[] = new String[50];
 		
-        boolean animalEsperado = true;
-		while (decl != null && animalEsperado) {
-			String pergunta = decl.getPropriedade();
-			String respostaEsperada = decl.getValor();
+		int i, j = 0;
+		for (i = 0; i < nAnimais.length; i++) {
+			obj = bc.recuperaObjeto(nAnimais[i]);
 			
-			String resposta = responder.ask(pergunta);
-			if (resposta.equalsIgnoreCase(respostaEsperada))
-				decl = obj.proxima();
-			else
-				animalEsperado = false;
+			IDeclaracao decl = obj.primeira();
+			
+			boolean animalEsperado = true;
+			
+			while (decl != null && animalEsperado) {
+				String pergunta = decl.getPropriedade();
+				int a;
+				boolean flag = true;
+				for(a = 0; (a < j) && (flag); a++) {
+					if (questoes[a].equalsIgnoreCase(pergunta))
+						flag = false;
+				}
+				
+				String respostaEsperada = decl.getValor();
+				String resposta;
+				if(flag) {
+					resposta = responder.ask(pergunta);
+					questoes[j] = pergunta;
+					resp[j] = resposta;
+					j++;
+				} else {
+					a--;
+					resposta = resp[a];
+				}
+				if (resposta.equalsIgnoreCase(respostaEsperada))
+					decl = obj.proxima();
+				else
+					animalEsperado = false;
+			}
+			
+			if(animalEsperado) {
+				boolean acertei = responder.finalAnswer(nAnimais[i]);
+			
+				if (acertei)
+					System.out.println("Oba! Acertei!");
+				else
+					System.out.println("fuem! fuem! fuem!");
+
+			}
+	        
 		}
 		
-		boolean acertei = responder.finalAnswer("tiranossauro");
-		
-		if (acertei)
-			System.out.println("Oba! Acertei!");
-		else
-			System.out.println("fuem! fuem! fuem!");
-
 	}
-
 }
