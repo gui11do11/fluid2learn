@@ -14,9 +14,9 @@ public class BaseConhecimento implements IBaseConhecimento
 {
 	public static final String DIRETORIO_RELATIVO = "../../s02app/bd",
 	                           EXTENSAO = ".txt";
-	private String diretorio = BaseConhecimento.class.getResource(DIRETORIO_RELATIVO).getPath();
+	public String diretorio = BaseConhecimento.class.getResource(DIRETORIO_RELATIVO).getPath();
 	
-	private String scenario;
+	public static String scenario;
 	
 	public void setScenario(String scenario) {
 		this.scenario = scenario;
@@ -25,6 +25,7 @@ public class BaseConhecimento implements IBaseConhecimento
     public String[] listaNomes()
     {
     	File diretorioRaiz = new File(diretorio + "/" + scenario);
+    	System.out.println("Diretorio: " + diretorioRaiz);
         
         String lista[] = diretorioRaiz.list();
         Vector<String> listaFiltrada = new Vector<String>();
