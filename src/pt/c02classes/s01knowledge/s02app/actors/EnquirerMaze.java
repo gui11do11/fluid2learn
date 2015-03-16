@@ -1,7 +1,7 @@
 package pt.c02classes.s01knowledge.s02app.actors;
 
 import java.util.Scanner;
-
+import java.util.*;
 import pt.c02classes.s01knowledge.s01base.inter.IEnquirer;
 import pt.c02classes.s01knowledge.s01base.inter.IResponder;
 
@@ -15,6 +15,8 @@ public class EnquirerMaze implements IEnquirer {
 	
 	public boolean discover() {
 		Scanner scanner = new Scanner(System.in);
+		
+		Stack pilha = new Stack();
 		
 		System.out.print("(P)ergunta, (M)ovimento ou (F)im? ");
 		String tipo = scanner.nextLine();
